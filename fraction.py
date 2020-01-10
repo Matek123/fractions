@@ -19,8 +19,15 @@ class Fraction:
     """
 
     def __init__(self, nom, denom):
-        self.nom = nom
-        self.denom = denom
+        if denom == 0:
+            raise ValueError
+        else:
+            if denom < 0:
+                denom = -denom
+                nom = -nom
+            common_denominator = gcd(nom, denom)
+            self.nom = nom // common_denominator
+            self.denom = denom // common_denominator
 
     def __str__(self):
         return f"{self.nom}/{self.denom}"
@@ -30,3 +37,24 @@ class Fraction:
 
     def __eq__(self, other):
         return self.nom == other.nom and self.denom == other.denom
+
+    def __mul__(self, other):
+        result = Fraction(self.nom * other.nom, self.denom * other.denom)
+        return result
+
+    def __add__(self, other):
+        result = Fraction(self.nom * other.denom + other.nom * self.denom, self.denom * other.denom)
+        return result
+
+    def __sub__(self, other):
+        result = Fraction(self.nom * other.denom - other.nom * self.denom, self.denom * other.denom)
+        return result
+
+    def __truediv__(self, other):
+        result = Fraction(self.nom * other.denom, self.denom * other.nom)
+        return result
+
+    def decimal(self):
+        result = self.nom / self.denom
+        return result
+
